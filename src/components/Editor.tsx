@@ -7,22 +7,23 @@ import { Button, Col, Container, Row } from 'react-bootstrap';
 import { EditorKit, EditorKitDelegate } from 'sn-editor-kit';
 import KanbanWrapper from './KanbanWrapper';
 import KanbanItemEditor from './KanbanItemEditor';
-import { v4 as uuidv4 } from 'uuid';
-const itemsFromBackend = [
-  {
-    index: 0,
-    id: uuidv4(),
-    title: 'First Task',
-    notes: 'test 1',
-  },
-  { index: 1, id: uuidv4(), title: 'Second task', notes: 'test 2' },
-  { index: 2, id: uuidv4(), title: 'Third task', notes: 'test 3' },
-  { index: 3, id: uuidv4(), title: 'Fourth task', notes: 'test 4' },
-  { index: 4, id: uuidv4(), title: 'Fifth task', notes: 'test 5' },
-  { index: 5, id: uuidv4(), title: 'Sixth task', notes: 'test 6' },
-  { index: 6, id: uuidv4(), title: 'Seventh task', notes: 'test 7' },
-  { index: 7, id: uuidv4(), title: 'Eighth task', notes: 'test 8' },
-];
+//testing code for setting up a board
+//import { v4 as uuidv4 } from 'uuid';
+// const itemsFromBackend = [
+//   {
+//     index: 0,
+//     id: uuidv4(),
+//     title: 'First Task',
+//     notes: 'test 1',
+//   },
+//   { index: 1, id: uuidv4(), title: 'Second task', notes: 'test 2' },
+//   { index: 2, id: uuidv4(), title: 'Third task', notes: 'test 3' },
+//   { index: 3, id: uuidv4(), title: 'Fourth task', notes: 'test 4' },
+//   { index: 4, id: uuidv4(), title: 'Fifth task', notes: 'test 5' },
+//   { index: 5, id: uuidv4(), title: 'Sixth task', notes: 'test 6' },
+//   { index: 6, id: uuidv4(), title: 'Seventh task', notes: 'test 7' },
+//   { index: 7, id: uuidv4(), title: 'Eighth task', notes: 'test 8' },
+// ];
 export enum HtmlElementId {
   snComponent = 'sn-component',
   textarea = 'textarea',
@@ -76,11 +77,11 @@ const initialState = {
   editKanbanItem: false,
   editKanbanItemId: undefined,
   editKanbanItemColumnID: undefined,
-  loaded: true,
+  loaded: false,
   backLogColumn: {
     id: 'backLogColumn',
     name: 'Backlog',
-    items: itemsFromBackend,
+    items: [],
   },
   todoColumn: { id: 'todoColumn', name: 'Todo', items: [] },
 
@@ -119,13 +120,74 @@ export default class Editor extends React.Component<{}, EditorInterface> {
     let delegate = new EditorKitDelegate({
       /** This loads every time a different note is loaded */
       setEditorRawText: (text: string) => {
-        this.setState({
-          ...initialState,
-          text,
-        });
+        let columns: {
+          backlog: Column;
+          todo: Column;
+          inProgress: Column;
+          done: Column;
+        };
+        let error: string = '';
+
+        if (text !== '') {
+          columns = JSON.parse(text);
+
+          if (
+            !(
+              'backlog' in columns &&
+              'todo' in columns &&
+              'inProgress' in columns &&
+              'done' in columns
+            )
+          ) {
+            error =
+              'Error with parsing columns, please switch to plain editor and clear the text. (This will delete all data in all columns!!), or try reverting to a proper save in history.';
+          }
+        } else {
+          columns = {
+            backlog: {
+              id: 'backLogColumn',
+              name: 'Backlog',
+              items: [],
+            },
+            todo: {
+              id: 'todoColumn',
+              name: 'Todo',
+              items: [],
+            },
+            inProgress: {
+              id: 'inProgressColumn',
+              name: 'In Progress',
+              items: [],
+            },
+            done: {
+              id: 'doneColumn',
+              name: 'Done',
+              items: [],
+            },
+          };
+        }
+        if (error === '') {
+          this.setState({
+            ...initialState,
+            text,
+            backLogColumn: columns.backlog,
+            todoColumn: columns.todo,
+            inProgressColumn: columns.inProgress,
+            doneColumn: columns.done,
+            loaded: true,
+          });
+        } else {
+          alert(error);
+        }
       },
       clearUndoHistory: () => {},
       getElementsBySelector: () => [],
+      generateCustomPreview: () => {
+        return {
+          html: `<div></div>`,
+          plain: '',
+        };
+      },
     });
 
     this.editorKit = new EditorKit({
@@ -135,23 +197,22 @@ export default class Editor extends React.Component<{}, EditorInterface> {
     });
   };
 
-  saveText = (text: string) => {
-    this.saveNote(text);
-    this.setState({
-      text: text,
-    });
-  };
-
-  saveNote = (text: string) => {
+  saveNote() {
     /** This will work in an SN context, but breaks the standalone editor,
      * so we need to catch the error
      */
-    // try {
-    //   this.editorKit.onEditorValueChanged(text);
-    // } catch (error) {
-    //   console.log('Error saving note:', error);
-    // }
-  };
+    let text = JSON.stringify({
+      backlog: this.state.backLogColumn,
+      todo: this.state.todoColumn,
+      inProgress: this.state.inProgressColumn,
+      done: this.state.doneColumn,
+    });
+    try {
+      this.editorKit.onEditorValueChanged(text);
+    } catch (error) {
+      console.log('Error saving note:', error);
+    }
+  }
 
   onBlur = (e: React.FocusEvent) => {};
 
@@ -231,8 +292,6 @@ export default class Editor extends React.Component<{}, EditorInterface> {
       () => {
         this.updateIndexes(sourceID);
         this.updateIndexes(destinationID);
-
-        //save to editor
       }
     );
   }
@@ -299,8 +358,7 @@ export default class Editor extends React.Component<{}, EditorInterface> {
       this.setState(
         { [columnID]: tempColumn } as Pick<ColumnKeys, keyof ColumnKeys>,
         () => {
-          //TODO: write back to editor
-          //this.saveNote();
+          this.saveNote();
         }
       );
     }
@@ -332,8 +390,7 @@ export default class Editor extends React.Component<{}, EditorInterface> {
           [columnID]: column,
         } as Pick<ColumnKeys, keyof ColumnKeys>,
         () => {
-          //TODO: write back to editor
-          // this.saveNote();
+          this.saveNote();
           this.setState({
             addKanbanItem: false,
             editKanbanItem: false,
@@ -364,7 +421,7 @@ export default class Editor extends React.Component<{}, EditorInterface> {
    * Deletes a kanban item  rom the corresponding colum state and calls saveNote to save back to the editor
    *
    * @param kanbanID - The ID of the Kanban item you want to delete
-   * @param - The ID of the parent column of your Kanban item you are deleteing
+   * @param - The ID of the parent column of your Kanban item you are trying to delete
    * @returns void
    *
    */
@@ -376,8 +433,7 @@ export default class Editor extends React.Component<{}, EditorInterface> {
       this.setState(
         { [columnID]: column } as Pick<ColumnKeys, keyof ColumnKeys>,
         () => {
-          //TODO: write to editor
-          // this.saveNote();
+          this.saveNote();
         }
       );
     } else {
