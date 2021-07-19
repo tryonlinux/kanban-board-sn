@@ -75,6 +75,24 @@ code {
 p {
   padding: 0px 1em;
 }
+.bootstrap-like-modal-footer {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  padding-right: 0rem;
+  padding-bottom: 0rem;
+  padding-left: 1rem;
+  border-top: 1px solid #e9ecef;
+  border-bottom-right-radius: 0.3rem;
+  border-bottom-left-radius: 0.3rem;
+}
+.bootstrap-like-modal-footer > :not(:last-child) {
+  margin-right: 0.25rem;
+}
 
 @import './print.scss';
 @import './dark.scss';

@@ -1,4 +1,3 @@
-//TODO: make buttons prettier
 import * as React from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { ColumnKeys, KanbanItem } from './Editor';

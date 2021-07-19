@@ -1,4 +1,3 @@
-//TODO: Clean up junk code
 //TODO: Mobile Friendly
 //TODO: Prettier design
 import { PlusCircleIcon } from '@primer/octicons-react';
@@ -7,6 +6,7 @@ import { Button, Col, Container, Row } from 'react-bootstrap';
 import { EditorKit, EditorKitDelegate } from 'sn-editor-kit';
 import KanbanWrapper from './KanbanWrapper';
 import KanbanItemEditor from './KanbanItemEditor';
+import InfoModal from './InfoModal';
 //testing code for setting up a board
 //import { v4 as uuidv4 } from 'uuid';
 // const itemsFromBackend = [
@@ -68,6 +68,8 @@ export interface EditorInterface {
   todoColumn: Column;
   inProgressColumn: Column;
   doneColumn: Column;
+  showInfo: boolean;
+  currentInfoText: string;
 }
 
 const initialState = {
@@ -78,6 +80,8 @@ const initialState = {
   editKanbanItemId: undefined,
   editKanbanItemColumnID: undefined,
   loaded: false,
+  showInfo: false,
+  currentInfoText: '',
   backLogColumn: {
     id: 'backLogColumn',
     name: 'Backlog',
@@ -111,6 +115,7 @@ export default class Editor extends React.Component<{}, EditorInterface> {
     this.deleteKanbanItem = this.deleteKanbanItem.bind(this);
     this.getKanbanItem = this.getKanbanItem.bind(this);
     this.updateIndexes = this.updateIndexes.bind(this);
+    this.toggleInfoModal = this.toggleInfoModal.bind(this);
   }
 
   componentDidMount() {
@@ -383,8 +388,6 @@ export default class Editor extends React.Component<{}, EditorInterface> {
       let column = this.state[columnID];
       let index = column.items.findIndex((x: any) => x.id === kanbanItem.id);
       column.items.splice(index, 1, kanbanItem);
-      //TODO: add me back into state somehow
-
       this.setState(
         {
           [columnID]: column,
@@ -440,7 +443,6 @@ export default class Editor extends React.Component<{}, EditorInterface> {
       alert('Error deleting item!');
     }
   }
-  //TODO: Finish this function
   /**
    * Handles the display info event when you click on the info button for a kanban item
    *
@@ -449,8 +451,25 @@ export default class Editor extends React.Component<{}, EditorInterface> {
    * @returns void
    *
    */
-  displayInfoBox(itemID: String, columnID: keyof ColumnKeys): void {}
 
+  displayInfoBox(itemID: String, columnID: keyof ColumnKeys): void {
+    let info = this.state[columnID].items.find((x: any) => x.id === itemID)
+      ?.notes;
+    if (info !== undefined) {
+      this.setState({ currentInfoText: info }, () => {
+        this.toggleInfoModal();
+      });
+    } else {
+      alert('Error: Could not find item to display notes!');
+    }
+  }
+  /**
+   * Toggles the display boolean for if we should display the info modal or not.
+   * @returns void
+   */
+  toggleInfoModal() {
+    this.setState({ showInfo: !this.state.showInfo });
+  }
   /**
    * Gets the current KanbanItem you are trying to edit when you click on the edit icon
    *
@@ -492,6 +511,14 @@ export default class Editor extends React.Component<{}, EditorInterface> {
               </Col>
             </Row>
           </div>
+          {this.state.showInfo ? (
+            <InfoModal
+              modalTextBody={this.state.currentInfoText}
+              toggleInfoModal={this.toggleInfoModal}
+            />
+          ) : (
+            <div></div>
+          )}
 
           {this.state.loaded ? (
             this.state.addKanbanItem ? (

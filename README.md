@@ -1,6 +1,8 @@
 # kanban-board-sn
 
-A simple Kanban style board editor for Standard Notes 
+A simple Kanban style board editor for Standard Notes.
+
+See project board for current todo items.
 
 ## Development
 
