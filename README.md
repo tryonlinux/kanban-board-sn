@@ -4,7 +4,7 @@ A simple Kanban style board editor for Standard Notes.
 
 See project board for current todo items.
 
-#Demo
+# Demo
 ![](https://github.com/tryonlinux/kanban-board-sn/blob/main/Kanban%20Board%20SN.gif)
 
 
