@@ -4,6 +4,10 @@ A simple Kanban style board editor for Standard Notes.
 
 See project board for current todo items.
 
+## Demo
+![](https://github.com/tryonlinux/kanban-board-sn/blob/main/Kanban%20Board%20SN.gif)
+
+
 ## Development
 
 **Prerequisites:** Install [Node.js](https://nodejs.org/en/), [Yarn](https://classic.yarnpkg.com/en/docs/install/), and [Git](https://github.com/git-guides/install-git) on your computer.
