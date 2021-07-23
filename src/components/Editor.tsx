@@ -173,7 +173,6 @@ export default class Editor extends React.Component<{}, EditorInterface> {
         }
         if (error === '') {
           this.setState({
-            ...initialState,
             text,
             backLogColumn: columns.backlog,
             todoColumn: columns.todo,
