@@ -501,62 +501,64 @@ export default class Editor extends React.Component<{}, EditorInterface> {
         tabIndex={0}
       >
         <Container fluid>
-          <div id="header">
-            <Row>
-              <Col>
-                <Button onClick={this.onAddKanbanItem} variant="dark">
-                  <PlusCircleIcon size={16} />
-                </Button>
-              </Col>
-            </Row>
-          </div>
-          {this.state.showInfo ? (
-            <InfoModal
-              modalTextBody={this.state.currentInfoText}
-              toggleInfoModal={this.toggleInfoModal}
-            />
-          ) : (
-            <div></div>
-          )}
-
-          {this.state.loaded ? (
-            this.state.addKanbanItem ? (
-              <KanbanItemEditor
-                onCancelAddEditKanbanItem={this.onCancelAddKanbanItem}
-                handleSubmit={this.handleSubmitOfKanbanItem}
-                editMode={false}
-                currentKanbanBoard={this.state.editKanbanItemColumnID}
-              />
-            ) : this.state.editKanbanItem ? (
-              <KanbanItemEditor
-                onCancelAddEditKanbanItem={this.onCancelAddKanbanItem}
-                handleSubmit={this.handleSubmitOfKanbanItem}
-                currentKanbanItem={this.getKanbanItem()}
-                currentKanbanBoard={this.state.editKanbanItemColumnID}
-                editMode={true}
+          <div className="sn-component">
+            <div id="header">
+              <Row>
+                <Col>
+                  <Button onClick={this.onAddKanbanItem} variant="dark">
+                    <PlusCircleIcon size={16} />
+                  </Button>
+                </Col>
+              </Row>
+            </div>
+            {this.state.showInfo ? (
+              <InfoModal
+                modalTextBody={this.state.currentInfoText}
+                toggleInfoModal={this.toggleInfoModal}
               />
             ) : (
-              <div>
-                <Row>
-                  <Col>
-                    <KanbanWrapper
-                      backLogColumn={this.state.backLogColumn}
-                      todoColumn={this.state.todoColumn}
-                      inProgressColumn={this.state.inProgressColumn}
-                      doneColumn={this.state.doneColumn}
-                      moveItemToNewColumn={this.moveItemToNewColumn}
-                      moveItemWithinColumn={this.moveItemWithinColumn}
-                      editItem={this.editKanbanItem}
-                      deleteItem={this.deleteKanbanItem}
-                      displayInfoBox={this.displayInfoBox}
-                    />
-                  </Col>
-                </Row>
-              </div>
-            )
-          ) : (
-            <div>Loading...</div>
-          )}
+              <div></div>
+            )}
+
+            {this.state.loaded ? (
+              this.state.addKanbanItem ? (
+                <KanbanItemEditor
+                  onCancelAddEditKanbanItem={this.onCancelAddKanbanItem}
+                  handleSubmit={this.handleSubmitOfKanbanItem}
+                  editMode={false}
+                  currentKanbanBoard={this.state.editKanbanItemColumnID}
+                />
+              ) : this.state.editKanbanItem ? (
+                <KanbanItemEditor
+                  onCancelAddEditKanbanItem={this.onCancelAddKanbanItem}
+                  handleSubmit={this.handleSubmitOfKanbanItem}
+                  currentKanbanItem={this.getKanbanItem()}
+                  currentKanbanBoard={this.state.editKanbanItemColumnID}
+                  editMode={true}
+                />
+              ) : (
+                <div>
+                  <Row>
+                    <Col>
+                      <KanbanWrapper
+                        backLogColumn={this.state.backLogColumn}
+                        todoColumn={this.state.todoColumn}
+                        inProgressColumn={this.state.inProgressColumn}
+                        doneColumn={this.state.doneColumn}
+                        moveItemToNewColumn={this.moveItemToNewColumn}
+                        moveItemWithinColumn={this.moveItemWithinColumn}
+                        editItem={this.editKanbanItem}
+                        deleteItem={this.deleteKanbanItem}
+                        displayInfoBox={this.displayInfoBox}
+                      />
+                    </Col>
+                  </Row>
+                </div>
+              )
+            ) : (
+              <div>Loading...</div>
+            )}
+          </div>
         </Container>
       </div>
     );

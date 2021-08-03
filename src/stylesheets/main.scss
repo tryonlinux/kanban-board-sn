@@ -31,7 +31,11 @@ html {
   // To prevent gray flash when focusing input on mobile Safari
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
-
+.card-header,
+.card-body {
+  font-family: var(--sn-stylekit-sans-serif-font);
+  font-size: var(--sn-stylekit-base-font-size);
+}
 .sn-component {
   display: flex;
   flex-direction: column;

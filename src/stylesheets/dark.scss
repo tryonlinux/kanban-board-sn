@@ -57,9 +57,11 @@
     --sn-stylekit-scrollbar-thumb-color: var(--sn-stylekit-info-color);
   }
 
-  /* Adjust background color for Plain Textarea 
+  /* Adjust background color for Plain Textarea
   This improves readability / usability in dark modes. */
-  .sn-component .sk-input.contrast {
+  .sn-component .sk-input.contrast,
+  .card-header,
+  .card-body {
     background-color: var(--sn-stylekit-background-color);
   }
 }

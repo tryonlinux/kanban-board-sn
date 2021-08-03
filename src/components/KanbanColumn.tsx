@@ -24,10 +24,8 @@ class KanbanColumn extends React.Component<
   render() {
     return (
       <Card key={this.props.column.id}>
-        <Card.Header style={{ backgroundColor: 'black' }}>
-          {this.props.column.name}
-        </Card.Header>
-        <Card.Body style={{ backgroundColor: 'black' }}>
+        <Card.Header>{this.props.column.name}</Card.Header>
+        <Card.Body>
           <div style={{ margin: 8, height: '80vh' }}>
             <Droppable
               droppableId={this.props.column.id}
@@ -39,7 +37,6 @@ class KanbanColumn extends React.Component<
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                     style={{
-                      background: snapshot.isDraggingOver ? 'black' : 'black',
                       padding: 0,
                       width: 250,
                       height: '80vh',
