@@ -16,7 +16,7 @@ The general instructions setting up an environment to develop Standard Notes ext
 
 1. Fork the [repository](https://github.com/tryonlinux/kanban-board-sn/) on GitHub.
 2. [Clone](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) your fork of the repository.
-3. Run `cd editor-template-cra-typescript` to enter the `editor-template-cra-typescript` directory.
+3. Run `cd kanban-board-sn` to enter the `kanban=board-sn` directory.
 4. Run `yarn install` to install the dependencies on your machine as they are described in `yarn.lock`.
 
 ### Testing in the browser
