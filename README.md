@@ -7,6 +7,10 @@ See project board for current todo items.
 ## Demo
 ![](https://github.com/tryonlinux/kanban-board-sn/blob/main/Kanban%20Board%20SN.gif)
 
+## Support
+
+[Buy me a Coffee](https://www.buymeacoffee.com/tryomas)
+
 
 ## Development
 
