@@ -8,7 +8,7 @@ See project board for current todo items.
 ![](https://github.com/tryonlinux/kanban-board-sn/blob/main/Kanban%20Board%20SN.gif)
 
 ## Install
-Install Link: https://listed.to/p/BkuMmDC0nU
+Install Link: https://listed.to/p/lAcuAyMggq
 
 ## Support
 
