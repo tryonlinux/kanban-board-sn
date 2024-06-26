@@ -1,4 +1,4 @@
-# kanban-board-sn
+# kanban-board-sn -- Archived, feel free to fork and self-host 
 
 A simple Kanban style board editor for Standard Notes.
 
